@@ -16,11 +16,11 @@
 <meta name="twitter:description" content="T-Doll Generator">
 <meta name="twiiter:image" content="https://sf2031.com/img/html/og_icon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:500|Noto+Sans+KR:500" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&amp;subset=korean" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.4.3/dist/cropper.min.css">
 <title>Girls' FrontLine T-Doll Generator</title>
 <STYLE>
-	body{font-family:'Noto Sans KR',sans-serif;font-family:'Noto Sans JP',sans-serif}
+	body{font-family:'Noto Sans KR',sans-serif}
 	img{max-width:100%;}
 </STYLE>
 </head>
@@ -199,7 +199,7 @@
 			}
 			});
 		}).on('hidden.bs.modal',function(){
-			let doll=cropper.getCroppedCanvas();
+			let doll=cropper.getCroppedCanvas({imageSmoothingEnabled:false});
 			cropBoxData=cropper.getCropBoxData();
 			canvasData=cropper.getCanvasData();
 			cropper.destroy();
