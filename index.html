@@ -25,15 +25,11 @@
 </STYLE>
 </head>
 <body class="bg-dark">
-	<nav class="navbar navbar-dark bg-warning text-dark">
-		<a class="navbar-brand">Girls' FrontLine T-Doll Generator</a>
-	</nav>
+	<nav class="navbar navbar-dark bg-warning text-dark"><a class="navbar-brand">Girls' FrontLine T-Doll Generator</a></nav>
 	<div class="container bg-dark m-auto">
 	<div class="col-xs-12 col-sm-6 mx-auto mt-4">
 	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend">
-			<span class="input-group-text" for="Rarity">Rank</span>
-		</div>
+		<div class="input-group-prepend"><span class="input-group-text" for="Rarity">Rank</span></div>
 		<select class="custom-select" id="Rarity">
 			<option>2 ☆</option>
 			<option>3 ☆</option>
@@ -44,9 +40,7 @@
 	</div>
 	<!-- bg color #2c343d-->
 	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend">
-			<span class="input-group-text" for="Type">Type</span>
-		</div>
+		<div class="input-group-prepend"><span class="input-group-text" for="Type">Type</span></div>
 		<select class="custom-select" id="Type">
 			<option>HG ☆</option>
 			<option>AR ☆</option>
@@ -57,15 +51,11 @@
 		</select>
 	</div>
 	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend">
-			<span class="input-group-text">No.</span>
-		</div>
+		<div class="input-group-prepend"><span class="input-group-text">No.</span></div>
 		<input type="text" class="form-control" placeholder="Number" aria-label="Number" id="No">
 	</div>
 	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend">
-			<span class="input-group-text">Name</span>
-		</div>
+		<div class="input-group-prepend"><span class="input-group-text">Name</span></div>
 		<input type="text" class="form-control" placeholder="Name" aria-label="Name" id="Name">
 	</div>
 	<div class="input-group mx-auto mb-3">
@@ -87,18 +77,10 @@
 		<div class="modal-content">
 			<div class="modal-header">
 			<h5 class="modal-title" id="modalLabel">Cropper</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<div class="modal-body">
-			<div class="img-container">
-				<img id="image" src="../docs/images/picture.jpg" alt="Picture">
-			</div>
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
+			<div class="modal-body"><div class="img-container"><img id="image" src="../docs/images/picture.jpg" alt="Picture"></div></div>
+			<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
 		</div>
 		</div>
 	</div>
@@ -123,11 +105,11 @@
 		window.FileReader?reader=new FileReader:alert("Your device doesn't support uploading images.");
 		const file=fileDom.files[0],imageType=/^image\//g;
 		imageType.test(file.type)||alert("Please upload a picture!");
-		reader.onload=(e=>{
+		reader.onload=e=>{
 			const img=document.getElementById("preview"),image=document.getElementById("image");
 			img.src=e.target.result,image.src=e.target.result
 			document.getElementById("inputlabel").innerHTML="Uploaded!"
-		});
+		};
 		reader.readAsDataURL(file)
 	}
 	function Wcanvas(){
@@ -145,9 +127,7 @@
 		}else{
 			content.drawImage(incage,0,d+(371*(Rarity-2)),175,371,0,0,175,371),content.drawImage(incage,0,Guns[Type]+((Rarity-2)*t),74,42,3,3,74,42)
 		};
-		for(var i=1;i<=Rarity&&"6"!=Rarity;i++){
-			content.drawImage(star,k,5,18,18),k-=18
-		};
+		for(var i=1;i<=Rarity&&"6"!=Rarity;i++) content.drawImage(star,k,5,18,18),k-=18;
 		content.textAlign="start";
 		content.textBaseline="middle";
 		content.font="900 20px Noto Sans KR";
@@ -165,29 +145,27 @@
 		let img_doll=new Image();
 		img_doll.crossOrigin="";
 		img_doll=document.getElementById("preview");
-		if(!img_doll.src) return alert("Please upload a picture!");
+		if(!img_doll.src){alert("Please upload a picture!"); return}
 		$('#modal').modal('show');
 		crop()
 	}
 	function crop(){
-		let image=document.getElementById("image"),
-			cropBoxData,canvasData,cropper;
-		$('#modal').on('shown.bs.modal',function(){
+		let image=document.getElementById("image"),cropBoxData,canvasData,cropper;
+		$('#modal').on('shown.bs.modal',()=>{
 			cropper=new Cropper(image,{
 			guides:false,
 			center:false,
 			autoCropArea:1,
 			dragMode:'move',
 			aspectRatio:175/276,
-			ready:function () {
+			ready:()=>{
 				//Should set crop box data first here
 				cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
 			}
 			})
-		}).on('hidden.bs.modal',function(){
+		}).on('hidden.bs.modal',()=>{
 			let doll=cropper.getCroppedCanvas({imageSmoothingEnabled:false});
-			cropBoxData=cropper.getCropBoxData();
-			canvasData=cropper.getCanvasData();
+			cropBoxData=cropper.getCropBoxData(),canvasData=cropper.getCanvasData();
 			cropper.destroy();
 			content.drawImage(doll,0,24,175,276);
 			Wcanvas();
@@ -198,8 +176,7 @@
 			})
 	};
 	function down_png(b){
-		const doll_name=document.getElementById("Name").value||"Unknown",
-			doll_no=document.getElementById("No").value||"?";
+		const doll_name=document.getElementById("Name").value||"Unknown",doll_no=document.getElementById("No").value||"?";
 		let a=document.createElement("a");
 		document.body.append(a);
 		a.download=`No-${doll_no}_${doll_name}.png`,a.href=document.getElementById("myCanvas").toDataURL();
