@@ -26,37 +26,45 @@
 </head>
 <body class="bg-dark">
 <div id="app">
-	<nav class="navbar navbar-dark bg-warning text-dark"><a class="navbar-brand">Girls' FrontLine T-Doll Generator</a></nav>
-	<div class="container bg-dark m-auto">
+	<nav class="navbar navbar-dark bg-warning text-dark">
+		<a class="navbar-brand">{{$t("txt.brand")}}</a>
+		<a class="navbar-brand">
+			<div class="input-group">
+				<div class="input-group-prepend"><span class="input-group-text" for="Lang">{{$t("txt.lang")}}</span></div>
+				<select class="custom-select" id="Lang" @change="langchange"><option v-for="lang in lnagList" :value="lang.value">{{lang.text}}</option></select>
+			</div>
+		</a>
+	</nav>
+	<div class="container bg-dark">
 	<div class="col-xs-12 col-sm-6 mx-auto mt-4">
-	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend"><span class="input-group-text" for="Rarity">Rank</span></div>
-		<select class="custom-select" id="Rarity" v-model="selected"><option v-for="rank in rankList" :value="rank.value">{{ rank.text }}</option></select>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend"><span class="input-group-text" for="Rarity">{{$t("txt.rank")}}</span></div>
+		<select class="custom-select" id="Rarity" v-model="selected"><option v-for="rank in rankList" :value="rank.value">{{rank.text}}</option></select>
 	</div>
-	<div class="input-group mx-auto mb-3" id="GunType">
-		<div class="input-group-prepend"><span class="input-group-text" for="Type">Type</span></div>
-		<select class="custom-select" id="Type" v-model="selected2"><option v-for="type in typeList" :value="type.value">{{ type.text }}</option></select>
+	<div class="input-group mb-3" id="GunType">
+		<div class="input-group-prepend"><span class="input-group-text" for="Type">{{$t("txt.type")}}</span></div>
+		<select class="custom-select" id="Type" v-model="selected2"><option v-for="type in typeList" :value="type.value">{{type.text}}</option></select>
 	</div>
-	<div class="input-group mx-auto mb-3">
+	<div class="input-group mb-3">
 		<div class="input-group-prepend"><span class="input-group-text">No.</span></div>
 		<input type="text" class="form-control" placeholder="Number" aria-label="Number" id="No" v-model="dollNumber">
 	</div>
-	<div class="input-group mx-auto mb-3">
-		<div class="input-group-prepend"><span class="input-group-text">Name</span></div>
+	<div class="input-group mb-3">
+		<div class="input-group-prepend"><span class="input-group-text">{{$t("txt.name")}}</span></div>
 		<input type="text" class="form-control" placeholder="Name" aria-label="Name" id="Name" v-model="dollName">
 	</div>
-	<div class="input-group mx-auto mb-3">
+	<div class="input-group mb-3">
 		<div class="custom-file">
 			<input type="file" class="custom-file-input" id="inputFile" @change="imgPreview">
-			<label class="custom-file-label" id="inputlabel" for="inputFile" aria-describedby="inputFile">Choose file</label>
+			<label class="custom-file-label" id="inputlabel" for="inputFile" aria-describedby="inputFile">{{$t("txt.file")}}</label>
 		</div>
 	</div>
-	<a class="d-block btn bg-secondary btn-dark rounded-0 text-center" href="#" @click="get_pic">Generate!</a>
-	<p class="text-white text-center">Tips:For best result,please use image size of 175 x 276 </p><p class="text-white text-center">and... 175/276 ratio！</p>
+	<a class="d-block btn bg-secondary btn-dark rounded-0 text-center" href="#" @click="get_pic">{{$t("txt.gen")}}</a>
+	<p class="text-white text-center">{{$t("txt.tips1")}}</p>
+	<p class="text-white text-center">{{$t("txt.tips2")}}</p>
 	<img id="preview" class="d-none">
-	<canvas id="myCanvas" class="d-none mx-auto mb-3" width="175" height="371">Your browser doesn't support Canvas,please use a more modern browser!</canvas>
-	<img id="pic_show" class="d-block mx-auto">
-	<a class="d-none btn bg-secondary btn-dark rounded-0 text-center" id="pic_down" href="#" @click="down_png">Download!</a>
+	<canvas id="myCanvas" class="d-none mx-auto mb-3" width="175" height="371">{{$t("txt.canvas")}}</canvas>
+	<a class="d-none btn bg-secondary btn-dark rounded-0 text-center" id="pic_down" href="#" @click="down_png">{{$t("txt.down")}}</a>
 	</div>
 	</div>
 	<div class="modal fade mh-100" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -66,58 +74,111 @@
 			<h5 class="modal-title" id="modalLabel">Cropper</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
-			<div class="modal-body"><div class="img-container"><img id="image" src="" alt="Picture"></div></div>
-			<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>
+			<div class="modal-body"><div class="img-container"><img id="image" src=""></div></div>
+			<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">{{$t("txt.close")}}</button></div>
 		</div>
 		</div>
 	</div>
-	</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.3/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.4.3/dist/cropper.min.js"></script>
 <script>
+const messages = {
+	"en-US": {
+		txt: {
+			brand: "Girls' FrontLine T-Doll Generator",
+			lang: "Language",
+			rank: "Rank",
+			type: "Type",
+			name: "Name",
+			file: "Choose file...",
+			gen: "Generate!",
+			tips1: "Tips:For best result,please use image size of 175 x 276",
+			tips2: "or... 175/276 ratio！",
+			canvas: "Your browser doesn't support Canvas,please use a more modern browser!",
+			device: "Your device doesn't support uploading images.",
+			upload: "Please upload a picture!",
+			down: "Download!",
+			close: "Close",
+		}
+	},
+	"ko-KR": {
+		txt: {
+			brand: "소녀전선 전술인형 제조기",
+			lang: "언어",
+			rank: "등급",
+			type: "종류",
+			name: "이름",
+			file: "파일 선택...",
+			gen: "생성하기!",
+			tips1: "팁:최고의 품질을 위해선,175 x 276 사이즈의 이미지를 사용해주세요.",
+			tips2: "아니면... 175/276 비율이요!",
+			canvas: "당신의 브라우저는 캔버스 기능을 지원하지 않습니다.\n최신 브라우저를 이용해주세요.",
+			device: "당신의 디바이스는 업로드를 지원하지 않습니다.",
+			upload: "이미지를 업로드 해주세요!",
+			down: "다운로드!",
+			close: "닫기",
+		}
+	}
+};
+var lang;
+if(navigator.language=="en-US"){lang="en-US"}else if(navigator.language=="ko-KR"){lang="ko-KR"}else{lang="en-US"}
+const i18n = new VueI18n({
+	locale: lang, // set locale
+	fallbackLocale: "en-US",
+	messages, // set locale messages
+});
 var app = new Vue({
+	i18n,
 	el: "#app",
 	data: {
 		dollName: "",
 		dollNumber: "",
+		lnagList: [
+			{text: "ENGLISH", value: "en-US"},
+			{text: "한국어", value: "ko-KR"},
+		],
 		selected: 2,
 		rankList: [
-			{ text: "2 ☆", value:2 },
-			{ text: "3 ☆", value:3 },
-			{ text: "4 ☆", value:4 },
-			{ text: "5 ☆", value:5 },
-			{ text: "EX ☆", value:6 },
+			{text: "2 ☆", value:2},
+			{text: "3 ☆", value:3},
+			{text: "4 ☆", value:4},
+			{text: "5 ☆", value:5},
+			{text: "EX ☆", value:6},
 		],
 		selected2: "HG",
 		typeList: [
-			{ text: "HG ☆", value:"HG" },
-			{ text: "AR ☆", value:"AR" },
-			{ text: "SMG ☆", value:"SMG" },
-			{ text: "RF ☆", value:"RF" },
-			{ text: "MG ☆", value:"MG" },
-			{ text: "SG ☆", value:"SG" },
+			{text: "HG ☆", value:"HG"},
+			{text: "AR ☆", value:"AR"},
+			{text: "SMG ☆", value:"SMG"},
+			{text: "RF ☆", value:"RF"},
+			{text: "MG ☆", value:"MG"},
+			{text: "SG ☆", value:"SG"},
 		],
+		load: false,
 	},
 	methods: {
+		langchange: lang=>{i18n.locale=lang.target.value},
 		imgPreview: fileDom=>{
-			let reader;
-			window.FileReader?reader=new FileReader:alert("Your device doesn't support uploading images.");
+			let reader,device=messages[lang].txt.device,upload=messages[lang].txt.upload;
+			window.FileReader?reader=new FileReader:alert(device);
 			const file=fileDom.target.files[0],imageType=/^image\//g;
-			imageType.test(file.type)||alert("Please upload a picture!");
+			imageType.test(file.type)||alert(upload);
 			reader.onload=e=>{
 				const img=document.getElementById("preview"),image=document.getElementById("image");
 				img.src=e.target.result,image.src=e.target.result
-				document.getElementById("inputlabel").innerHTML="Uploaded!"
+				document.getElementById("inputlabel").innerHTML="Uploaded!";
 			};
 			reader.readAsDataURL(file)
 		},
 		get_pic: ()=>{
 			content.clearRect(0,0,canvas.width,canvas.height);
-			let img_doll=new Image(),image=document.getElementById("image"),cropBoxData,canvasData,cropper;
+			let img_doll=new Image(),image=document.getElementById("image"),cropBoxData,canvasData,cropper,device=messages[lang].txt.device,upload=messages[lang].txt.upload;
 			img_doll.crossOrigin="",img_doll=document.getElementById("preview");
-			if(!img_doll.src){alert("Please upload a picture!"); return};
+			if(!img_doll.src){return alert(upload)};
 			$('#modal').modal('show');
 			$('#modal').on('shown.bs.modal',()=>{
 				cropper=new Cropper(image,{
@@ -126,9 +187,7 @@ var app = new Vue({
 				autoCropArea:1,
 				dragMode:'move',
 				aspectRatio:175/276,
-				ready:()=>{
-					cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
-				}
+				ready:()=>{cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData)}
 				})
 			}).on('hidden.bs.modal',()=>{
 				let doll=cropper.getCroppedCanvas({imageSmoothingEnabled:false});
@@ -162,18 +221,16 @@ var app = new Vue({
 				content.strokeStyle="White";
 				content.fillStyle="#fff";
 				content.fillText(doll_no,132,356,40);
-				document.getElementById("myCanvas").classList.remove("d-none");
-				document.getElementById("myCanvas").classList.add("d-block");
-				document.getElementById("pic_down").classList.remove("d-none");
+				canvas.classList.add("d-block");
 				document.getElementById("pic_down").classList.add("d-block")
 			})
 		},
 		down_png: ()=>{
 			let doll_name=app.dollName||"Unknown",doll_no=app.dollNumber||"0",a=document.createElement("a");
 			document.body.append(a);
-			a.download=`No-${doll_no}_${doll_name}.png`,a.href=document.getElementById("myCanvas").toDataURL();
+			a.download=`No-${doll_no}_${doll_name}.png`,a.href=app.canvas.toDataURL();
 			a.click(),a.remove()
-		}
+		},
 	},
 })
 const canvas=document.getElementById("myCanvas"),content=canvas.getContext("2d");
