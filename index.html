@@ -124,10 +124,8 @@ img{max-height:552px}
 		</div>
 	</transition>
 </script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.3/dist/vue.js"></script>
-<script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.3/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-i18n@8.8.1/dist/vue-i18n.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.4.3/dist/cropper.min.js"></script>
 <script>
 var Lang;
@@ -190,6 +188,8 @@ Vue.component('modal', {
 	},
 	mounted: function(){
 		app.showCanvas = true;
+		if(!app.dollName){app.dollName="Unknown"};
+		if(!app.dollNumber){app.dollNumber="0"};
 		app.cropper=new Cropper(document.getElementById("image"),{
 			guides:false,
 			center:false,
@@ -208,8 +208,6 @@ Vue.component('modal', {
 		content.drawImage(doll,0,24,175,276);
 		let Rarity=app.selected,
 			Type=app.selected2,
-			doll_name=app.dollName||"Unknown",
-			doll_no=app.dollNumber||"0",
 			Guns={HG:42,SM:210,AR:0,RF:126,SG:168,MG:84},
 			d=1278,k=154,t=252;
 		"EX"==Rarity&&(Rarity=6);
@@ -227,12 +225,12 @@ Vue.component('modal', {
 		content.font="900 20px Noto Sans KR";
 		content.font="900 20px Noto Sans JP";
 		content.fillStyle="#000";
-		content.fillText(doll_name,6,316,163);
+		content.fillText(app.dollName,6,316,163);
 		content.font="500 18px Noto Sans KR";
 		content.font="500 18px Noto Sans JP";
 		content.strokeStyle="White";
 		content.fillStyle="#fff";
-		content.fillText(doll_no,132,356,40);
+		content.fillText(app.dollNumber,132,356,40);
 	}
 });
 var app = new Vue({
@@ -250,7 +248,6 @@ var app = new Vue({
 		canvas: "",
 		dollName: "",
 		dollNumber: "",
-		incage: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAkUExURQAAAPCwAPCwAPCwAPCwAPCwAPCwAPCwAPCwAPCwAPCwAPCwAD0+4y4AAAALdFJOUwBM0iIR6zN3iKJm7rk7MwAAALBJREFUGNNjYAABQQYU0IrK7S5A4a7ejsrdbQCmHWBcZSDJ1pQA4Urv3snAYK69gwHG3V1ctHu3AoILAgZQbjaYtwvKY9QGcydAeJIQpbshUrOhvI1g10dDebs3g7gu5qpQ7iaIwcySEJNgRjE4d4O5MEcxcEOkBaBc1927o4AWqEG53rt3J7BI7N7kAFMM0sdYvQTCNd0dAKYNYLIJyIHDihpWTgEoXCYUtQxsDNi5APTNUwtksbfDAAAAAElFTkSuQmCC",
 		lnagList: [
 			{text: "ENGLISH", value: "en-US"},
 			{text: "한국어", value: "ko-KR"},
@@ -275,14 +272,14 @@ var app = new Vue({
 	},
 	methods: {
 		langchange: lang=>{
-			Lang=lang.target.value
-			i18n.locale=lang.target.value
+			Lang=lang.target.value,
+			i18n.locale=lang.target.value,
 			app.device=messages[Lang].txt.device,
 			app.upload=messages[Lang].txt.upload
 		},
 		imgPreview: function(fileDom){
 			window.FileReader?this.img=new FileReader:alert(app.device);
-			const file=fileDom.target.files[0],imageType=/^image\//g;
+			let file=fileDom.target.files[0],imageType=/^image\//g;
 			if(!imageType.test(file.type)){
 				return alert(app.upload)
 			};
@@ -296,9 +293,9 @@ var app = new Vue({
 			this.showModal = true
 		},
 		down_png: ()=>{
-			let doll_name=app.dollName||"Unknown",doll_no=app.dollNumber||"0",a=document.createElement("a");
+			let a=document.createElement("a");
 			document.body.append(a);
-			a.download=`No-${doll_no}_${doll_name}.png`,a.href=app.canvas.toDataURL();
+			a.download=`No-${app.dollNumber}_${app.dollName}.png`,a.href=app.canvas.toDataURL();
 			a.click(),a.remove()
 		},
 	},
