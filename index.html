@@ -31,7 +31,7 @@ img{max-height:552px}
 	height: 100%;
 	background-color: rgba(0, 0, 0, .5);
 	display: table;
-	transition: opacity .3s ease;
+	transition: opacity .3s ease
 }
 .modal-wrapper {
 	display: table-cell;
@@ -44,11 +44,11 @@ img{max-height:552px}
 	background-color: #fff;
 	border-radius: 2px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-	transition: all .3s ease;
+	transition: all .3s ease
 }
 .modal-header h3 {
 	margin-top: 0;
-	color: #42b983;
+	color: #42b983
 }
 .modal-body{margin: 20px 0}
 .modal-default-button {float: right}
@@ -57,7 +57,7 @@ img{max-height:552px}
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
 	-webkit-transform: scale(1.1);
-	transform: scale(1.1);
+	transform: scale(1.1)
 }
 </STYLE>
 </head>
@@ -73,35 +73,18 @@ img{max-height:552px}
 		</a>
 	</nav>
 	<div class="container bg-dark">
-	<div class="col-xs-12 col-sm-6 mx-auto mt-4">
-	<div class="input-group mb-3">
-		<div class="input-group-prepend"><span class="input-group-text" for="Rarity">{{$t("txt.rank")}}</span></div>
-		<select class="custom-select" id="Rarity" v-model="selected"><option v-for="rank in rankList" :value="rank.value">{{rank.text}}</option></select>
-	</div>
-	<div class="input-group mb-3" id="GunType">
-		<div class="input-group-prepend"><span class="input-group-text" for="Type">{{$t("txt.type")}}</span></div>
-		<select class="custom-select" id="Type" v-model="selected2"><option v-for="type in typeList" :value="type.value">{{type.text}}</option></select>
-	</div>
-	<div class="input-group mb-3">
-		<div class="input-group-prepend"><span class="input-group-text">No.</span></div>
-		<input type="text" class="form-control" placeholder="Number" aria-label="Number" id="No" v-model="dollNumber">
-	</div>
-	<div class="input-group mb-3">
-		<div class="input-group-prepend"><span class="input-group-text">{{$t("txt.name")}}</span></div>
-		<input type="text" class="form-control" placeholder="Name" aria-label="Name" id="Name" v-model="dollName">
-	</div>
-	<div class="input-group mb-3">
-		<div class="custom-file">
-			<input type="file" class="custom-file-input" id="inputFile" @change="imgPreview">
-			<label class="custom-file-label" id="inputlabel" for="inputFile" aria-describedby="inputFile">{{$t("txt.file")}}</label>
+		<div class="col-xs-12 col-sm-6 mx-auto mt-4">
+			<input-group id=Rarity></input-group>
+			<input-group id=Type></input-group>
+			<input-group id=DollNumber></input-group>
+			<input-group id=DollName></input-group>
+			<input-group id=inputFile></input-group>
+			<a class="d-block btn bg-secondary btn-dark rounded-0 text-center" href="#" @click="get_pic">{{$t("txt.gen")}}</a>
+			<p class="text-white text-center">{{$t("txt.tips1")}}</p>
+			<p class="text-white text-center">{{$t("txt.tips2")}}</p>
+			<canvas id="myCanvas" class="d-block mx-auto mb-3" width="175" height="371" v-if="showCanvas">{{$t("txt.canvas")}}</canvas>
+			<a class="d-block btn bg-secondary btn-dark rounded-0 text-white text-center" @click="down_png" v-if="showCanvas">{{$t("txt.down")}}</a>
 		</div>
-	</div>
-	<a class="d-block btn bg-secondary btn-dark rounded-0 text-center" href="#" @click="get_pic">{{$t("txt.gen")}}</a>
-	<p class="text-white text-center">{{$t("txt.tips1")}}</p>
-	<p class="text-white text-center">{{$t("txt.tips2")}}</p>
-	<canvas id="myCanvas" class="d-block mx-auto mb-3" width="175" height="371" v-if="showCanvas">{{$t("txt.canvas")}}</canvas>
-	<a class="d-block btn bg-secondary btn-dark rounded-0 text-center" @click="down_png" v-if="showCanvas">{{$t("txt.down")}}</a>
-	</div>
 	</div>
 	<modal v-if="showModal" @close="showModal = false"></modal>
 </div>
@@ -124,7 +107,7 @@ img{max-height:552px}
 		</div>
 	</transition>
 </script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.3/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.5/dist/vue.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-i18n@8.8.1/dist/vue-i18n.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.4.3/dist/cropper.min.js"></script>
 <script>
@@ -143,6 +126,7 @@ const messages = {
 			lang: "Language",
 			rank: "Rank",
 			type: "Type",
+			number:"No.",
 			name: "Name",
 			file: "Choose file...",
 			gen: "Generate!",
@@ -161,6 +145,7 @@ const messages = {
 			lang: "언어",
 			rank: "등급",
 			type: "종류",
+			number: "번호",
 			name: "이름",
 			file: "파일 선택...",
 			gen: "생성하기!",
@@ -179,8 +164,8 @@ const i18n = new VueI18n({
 	fallbackLocale: "en-US",
 	messages, // set locale messages
 });
-Vue.component('modal', {
-	template: '#modal-template',
+Vue.component("modal", {
+	template: "#modal-template",
 	computed: {
 		compiledIMG:function(){
 			return `<img id="image" src=${app.img.result}>`
@@ -188,8 +173,8 @@ Vue.component('modal', {
 	},
 	mounted: function(){
 		app.showCanvas = true;
-		if(!app.dollName){app.dollName="Unknown"};
-		if(!app.dollNumber){app.dollNumber="0"};
+		if(!app.DollName){app.DollName="Unknown"};
+		if(!app.DollNumber){app.DollNumber="0"};
 		app.cropper=new Cropper(document.getElementById("image"),{
 			guides:false,
 			center:false,
@@ -225,12 +210,81 @@ Vue.component('modal', {
 		content.font="900 20px Noto Sans KR";
 		content.font="900 20px Noto Sans JP";
 		content.fillStyle="#000";
-		content.fillText(app.dollName,6,316,163);
+		content.fillText(app.DollName,6,316,163);
 		content.font="500 18px Noto Sans KR";
 		content.font="500 18px Noto Sans JP";
 		content.strokeStyle="White";
 		content.fillStyle="#fff";
-		content.fillText(app.dollNumber,132,356,40);
+		content.fillText(app.DollNumber,132,356,40);
+	}
+});
+Vue.component("input-group",{
+	template:
+	`<div class="input-group mb-3">
+		<div class="input-group-prepend" v-if="id === 'Rarity'||id === 'Type'||id == 'DollNumber'||id == 'DollName'">
+			<span class="input-group-text" :for=id>
+				{{ "Rarity"===id?$t("txt.rank"):"Type"===id?$t("txt.type"):"DollNumber"===id?$t("txt.number"):$t("txt.name") }}
+			</span>
+		</div>
+		<forsel :id=id></forsel>
+	</div>`,
+	props: ["id"],
+});
+Vue.component("forsel",{
+	template:
+	`<select v-if="id === 'Rarity'||id === 'Type'" class="custom-select" :id=id @input="changes">
+		<option v-if="id === 'Rarity'" v-for="rank in rankList" :value="rank.value">{{ rank.text }}</option>
+		<option v-if="id === 'Type'" v-for="type in typeList" :value="type.value">{{ type.text }}</option>
+	</select>
+	<input v-else-if="id == 'DollNumber'||id == 'DollName'" type="text" class="form-control" :aria-label=id :id=id :v-model=id></input>
+	<div class="custom-file" v-else>
+		<input type="file" class="custom-file-input" id="inputFile" @change="imgPreview">
+		<label class="custom-file-label" id="inputlabel" for="inputFile" aria-describedby="inputFile">{{$t("txt.file")}}</label>
+	</div>`,
+	props: ["id"],
+	data: function(){
+		return {
+			rankList: [
+				{text: "2 ☆", value:2},
+				{text: "3 ☆", value:3},
+				{text: "4 ☆", value:4},
+				{text: "5 ☆", value:5},
+				{text: "EX ☆", value:6},
+			],
+			typeList: [
+				{text: "HG ☆", value:"HG"},
+				{text: "AR ☆", value:"AR"},
+				{text: "SMG ☆", value:"SMG"},
+				{text: "RF ☆", value:"RF"},
+				{text: "MG ☆", value:"MG"},
+				{text: "SG ☆", value:"SG"},
+			],
+		}
+	},
+	methods: {
+		changes: function(){
+			var parent = this.$parent.$parent, value = this.$el.value;
+			if(this.id == "Rarity"){
+				parent.selected = value
+			}else if(this.id == "GunType"){
+				parent.selected2 = value
+			}else if(this.id == "DollNumber"){
+				parent.DollNumber = value
+			}else if(this.id == "DollName"){
+				parent.DollName = value
+			}
+		},
+		imgPreview: function(fileDom){
+			window.FileReader?app.img=new FileReader:alert(app.device);
+			let file=fileDom.target.files[0],imageType=/^image\//g;
+			if(!imageType.test(file.type)){
+				return alert(app.upload)
+			};
+			app.img.onload=e=>{
+				document.getElementById("inputlabel").innerHTML="Uploaded!";
+			};
+			app.img.readAsDataURL(file)
+		},
 	}
 });
 var app = new Vue({
@@ -246,29 +300,14 @@ var app = new Vue({
 		canvasData: "",
 		cropper: "",
 		canvas: "",
-		dollName: "",
-		dollNumber: "",
+		DollName: "",
+		DollNumber: "",
 		lnagList: [
 			{text: "ENGLISH", value: "en-US"},
 			{text: "한국어", value: "ko-KR"},
 		],
 		selected: 2,
-		rankList: [
-			{text: "2 ☆", value:2},
-			{text: "3 ☆", value:3},
-			{text: "4 ☆", value:4},
-			{text: "5 ☆", value:5},
-			{text: "EX ☆", value:6},
-		],
 		selected2: "HG",
-		typeList: [
-			{text: "HG ☆", value:"HG"},
-			{text: "AR ☆", value:"AR"},
-			{text: "SMG ☆", value:"SMG"},
-			{text: "RF ☆", value:"RF"},
-			{text: "MG ☆", value:"MG"},
-			{text: "SG ☆", value:"SG"},
-		],
 	},
 	methods: {
 		langchange: lang=>{
@@ -277,17 +316,6 @@ var app = new Vue({
 			app.device=messages[Lang].txt.device,
 			app.upload=messages[Lang].txt.upload
 		},
-		imgPreview: function(fileDom){
-			window.FileReader?this.img=new FileReader:alert(app.device);
-			let file=fileDom.target.files[0],imageType=/^image\//g;
-			if(!imageType.test(file.type)){
-				return alert(app.upload)
-			};
-			this.img.onload=e=>{
-				document.getElementById("inputlabel").innerHTML="Uploaded!";
-			};
-			this.img.readAsDataURL(file)
-		},
 		get_pic: function(){
 			if(!this.img){return alert(app.upload)};
 			this.showModal = true
@@ -295,8 +323,9 @@ var app = new Vue({
 		down_png: ()=>{
 			let a=document.createElement("a");
 			document.body.append(a);
-			a.download=`No-${app.dollNumber}_${app.dollName}.png`,a.href=app.canvas.toDataURL();
-			a.click(),a.remove()
+			a.download=`No-${app.DollNumber}_${app.DollName}.png`,a.href=app.canvas.toDataURL();
+			a.click();
+			a.remove()
 		},
 	},
 })
